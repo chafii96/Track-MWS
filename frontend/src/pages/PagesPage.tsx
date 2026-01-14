@@ -28,12 +28,51 @@ export default function PagesPage() {
 
   const rows = useMemo(() => {
     if (!hits) return [];
-    const map = new Map<string, { views: number; visitors: Set<string>; dur: number; durN: number; scr: number; scrN: number }>();
+
+    // Build per-session navigation path (ordered) from pageview hits
+    const bySession = new Map<string, { ts: number; url: string }[]>();
     for (const h of hits) {
       if (h.type !== "pageview") continue;
-      const st = map.get(h.url) || { views: 0, visitors: new Set(), dur: 0, durN: 0, scr: 0, scrN: 0 };
+      const list = bySession.get(h.sessionId) || [];
+      list.push({ ts: h.ts, url: h.url });
+      bySession.set(h.sessionId, list);
+    }
+
+    const entryCount: Record<string, number> = {};
+    const exitCount: Record<string, number> = {};
+
+    bySession.forEach((list) => {
+      if (!list.length) return;
+      const sorted = list.sort((a, b) => a.ts - b.ts);
+      const entry = sorted[0].url;
+      const exit = sorted[sorted.length - 1].url;
+      entryCount[entry] = (entryCount[entry] || 0) + 1;
+      exitCount[exit] = (exitCount[exit] || 0) + 1;
+    });
+
+    const map = new Map<
+      string,
+      { views: number; visitors: Set<string>; dur: number; durN: number; scr: number; scrN: number; entry: number; exit: number }
+    >();
+
+    for (const h of hits) {
+      if (h.type !== "pageview") continue;
+      const st =
+        map.get(h.url) ||
+        ({
+          views: 0,
+          visitors: new Set<string>(),
+          dur: 0,
+          durN: 0,
+          scr: 0,
+          scrN: 0,
+          entry: 0,
+          exit: 0,
+        } as any);
+
       st.views += 1;
       st.visitors.add(h.visitorId);
+
       if (typeof h.durationMs === "number") {
         st.dur += h.durationMs || 0;
         st.durN += 1;
@@ -42,19 +81,28 @@ export default function PagesPage() {
         st.scr += h.scrollMax || 0;
         st.scrN += 1;
       }
+
       map.set(h.url, st);
     }
+
+    // Attach entry/exit counts
+    for (const [url, st] of map.entries()) {
+      st.entry = entryCount[url] || 0;
+      st.exit = exitCount[url] || 0;
+    }
+
     const arr: Row[] = Array.from(map.entries()).map(([url, s]) => ({
       url,
       views: s.views,
       visitors: s.visitors.size,
       avgDurationMs: s.durN ? s.dur / s.durN : 0,
       avgScroll: s.scrN ? s.scr / s.scrN : 0,
+      entry: s.entry,
+      exit: s.exit,
+      exitRate: s.views ? (s.exit / s.views) * 100 : 0,
     }));
 
-    const filtered = q.trim()
-      ? arr.filter((r) => r.url.toLowerCase().includes(q.trim().toLowerCase()))
-      : arr;
+    const filtered = q.trim() ? arr.filter((r) => r.url.toLowerCase().includes(q.trim().toLowerCase())) : arr;
 
     return filtered.sort((a, b) => b.views - a.views);
   }, [hits, q]);
