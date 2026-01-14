@@ -43,34 +43,52 @@ export default function TechPage() {
           <Card data-testid="tech-browsers" className="rounded-2xl border-border/60 bg-card/60 p-5">
             <div data-testid="tech-browsers-title" className="text-sm font-semibold">{lang === "ar" ? "المتصفحات" : "Browsers"}</div>
             <div className="mt-4 h-56">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie dataKey="value" data={mkPie(browsers)} innerRadius={45} outerRadius={78} stroke="transparent" />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              {browsers.length ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie dataKey="value" data={mkPie(browsers)} innerRadius={45} outerRadius={78} stroke="transparent" />
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div data-testid="tech-browsers-empty" className="flex h-full items-center justify-center rounded-2xl border border-dashed border-border/70 bg-background/30 text-sm text-muted-foreground">
+                  {lang === "ar" ? "لا بيانات." : "No data."}
+                </div>
+              )}
             </div>
           </Card>
           <Card data-testid="tech-os" className="rounded-2xl border-border/60 bg-card/60 p-5">
             <div data-testid="tech-os-title" className="text-sm font-semibold">{lang === "ar" ? "أنظمة التشغيل" : "Operating systems"}</div>
             <div className="mt-4 h-56">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie dataKey="value" data={mkPie(os)} innerRadius={45} outerRadius={78} stroke="transparent" />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              {os.length ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie dataKey="value" data={mkPie(os)} innerRadius={45} outerRadius={78} stroke="transparent" />
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div data-testid="tech-os-empty" className="flex h-full items-center justify-center rounded-2xl border border-dashed border-border/70 bg-background/30 text-sm text-muted-foreground">
+                  {lang === "ar" ? "لا بيانات." : "No data."}
+                </div>
+              )}
             </div>
           </Card>
           <Card data-testid="tech-devices" className="rounded-2xl border-border/60 bg-card/60 p-5">
             <div data-testid="tech-devices-title" className="text-sm font-semibold">{lang === "ar" ? "الأجهزة" : "Devices"}</div>
             <div className="mt-4 h-56">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie dataKey="value" data={mkPie(devices)} innerRadius={45} outerRadius={78} stroke="transparent" />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              {devices.length ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie dataKey="value" data={mkPie(devices)} innerRadius={45} outerRadius={78} stroke="transparent" />
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div data-testid="tech-devices-empty" className="flex h-full items-center justify-center rounded-2xl border border-dashed border-border/70 bg-background/30 text-sm text-muted-foreground">
+                  {lang === "ar" ? "لا بيانات." : "No data."}
+                </div>
+              )}
             </div>
           </Card>
         </div>

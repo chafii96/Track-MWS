@@ -53,8 +53,35 @@ export default function SitesPage() {
 
   async function copySnippet() {
     if (!selected) return;
-    await navigator.clipboard.writeText(snippet(selected.id));
-    toast({ title: t("copied", lang), description: t("trackingSnippet", lang) });
+    const text = snippet(selected.id);
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        throw new Error("clipboard_unavailable");
+      }
+      toast({ title: t("copied", lang), description: t("trackingSnippet", lang) });
+    } catch (e) {
+      // Fallback for environments that block clipboard APIs
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "true");
+      ta.style.position = "fixed";
+      ta.style.top = "-9999px";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        toast({ title: t("copied", lang), description: t("trackingSnippet", lang) });
+      } catch {
+        toast({
+          title: lang === "ar" ? "تعذّر النسخ" : "Copy failed",
+          description: lang === "ar" ? "انسخ الكود يدوياً من الصندوق." : "Please copy manually from the box.",
+        });
+      }
+      ta.remove();
+    }
   }
 
   async function removeSite(id: string) {

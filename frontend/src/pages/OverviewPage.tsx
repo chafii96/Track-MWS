@@ -165,8 +165,9 @@ export default function OverviewPage() {
                 </div>
               </div>
               <div className="mt-4 h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chart} margin={{ left: 8, right: 12, top: 10, bottom: 0 }}>
+                {chart.length ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={chart} margin={{ left: 8, right: 12, top: 10, bottom: 0 }}>
                     <defs>
                       <linearGradient id="pv" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor="rgb(99, 102, 241)" stopOpacity={0.35} />
@@ -183,8 +184,16 @@ export default function OverviewPage() {
                     <Tooltip />
                     <Area type="monotone" dataKey="pageviews" stroke="rgb(99, 102, 241)" fill="url(#pv)" strokeWidth={2} />
                     <Area type="monotone" dataKey="visitors" stroke="rgb(34, 211, 238)" fill="url(#vis)" strokeWidth={2} />
-                  </AreaChart>
-                </ResponsiveContainer>
+                    </AreaChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div
+                    data-testid="timeseries-empty"
+                    className="flex h-full items-center justify-center rounded-2xl border border-dashed border-border/70 bg-background/30 text-sm text-muted-foreground"
+                  >
+                    {lang === "ar" ? "لا يوجد بيانات بعد." : "No data yet."}
+                  </div>
+                )}
               </div>
             </Card>
           </div>

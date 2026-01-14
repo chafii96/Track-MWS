@@ -41,12 +41,18 @@ export default function SourcesPage() {
               {lang === "ar" ? "القنوات" : "Channels"}
             </div>
             <div className="mt-4 h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie dataKey="value" nameKey="name" data={pieData} innerRadius={50} outerRadius={85} stroke="transparent" />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              {pieData.length ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie dataKey="value" nameKey="name" data={pieData} innerRadius={50} outerRadius={85} stroke="transparent" />
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div data-testid="channels-empty" className="flex h-full items-center justify-center rounded-2xl border border-dashed border-border/70 bg-background/30 text-sm text-muted-foreground">
+                  {lang === "ar" ? "لا بيانات." : "No data."}
+                </div>
+              )}
             </div>
           </Card>
 
