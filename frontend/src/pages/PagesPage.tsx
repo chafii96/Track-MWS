@@ -135,10 +135,12 @@ export default function PagesPage() {
       ) : (
         <Card data-testid="pages-table" className="rounded-2xl border-border/60 bg-card/60 p-0 overflow-hidden">
           <div className="grid grid-cols-12 gap-2 border-b border-border/60 bg-muted/40 px-4 py-3 text-xs font-semibold text-muted-foreground">
-            <div className="col-span-6" data-testid="pages-col-url">URL</div>
+            <div className="col-span-5" data-testid="pages-col-url">URL</div>
             <div className="col-span-2" data-testid="pages-col-views">Views</div>
-            <div className="col-span-2" data-testid="pages-col-visitors">Visitors</div>
-            <div className="col-span-1" data-testid="pages-col-scroll">Scroll%</div>
+            <div className="col-span-1" data-testid="pages-col-visitors">Visitors</div>
+            <div className="col-span-1" data-testid="pages-col-entry">Entry</div>
+            <div className="col-span-1" data-testid="pages-col-exit">Exit</div>
+            <div className="col-span-1" data-testid="pages-col-scroll">Scr%</div>
             <div className="col-span-1" data-testid="pages-col-dur">Avg</div>
           </div>
           <div className="divide-y divide-border/60">
