@@ -8,7 +8,7 @@ import tsPlugin from "@typescript-eslint/eslint-plugin";
 
 export default [
   {
-    ignores: ["build/**", "node_modules/**"],
+    ignores: ["build/**", "node_modules/**", "src/components/ui/**"],
   },
   js.configs.recommended,
   {
@@ -20,6 +20,9 @@ export default [
       },
       ecmaVersion: 2022,
       sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
     },
     plugins: {
       react,
@@ -52,12 +55,6 @@ export default [
     rules: {
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    },
-  },
-  {
-    files: ["src/components/ui/calendar.jsx"],
-    rules: {
-      "react/no-unstable-nested-components": "off",
     },
   },
 ];
