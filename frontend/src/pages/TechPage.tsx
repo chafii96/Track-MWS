@@ -66,7 +66,10 @@ export default function TechPage() {
             <div data-testid="tech-devices-title" className="text-sm font-semibold">{lang === "ar" ? "الأجهزة" : "Devices"}</div>
             <div className="mt-4 h-56">
               <ResponsiveContainer width="100%" height="100%">
-                <Pie dataKey="value" data={mkPie(devices)} innerRadius={45} outerRadius={78} stroke="transparent" />
+                <PieChart>
+                  <Pie dataKey="value" data={mkPie(devices)} innerRadius={45} outerRadius={78} stroke="transparent" />
+                  <Tooltip />
+                </PieChart>
               </ResponsiveContainer>
             </div>
           </Card>

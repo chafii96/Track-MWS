@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Moon, Sun, Languages, Wifi, WifiOff } from "lucide-react";
+import { MobileNav } from "@/components/MobileNav";
 
 export function Topbar({ isOnline }: { isOnline: boolean }) {
   const { lang, theme, setLang, setTheme } = useAppStore();
@@ -15,14 +16,17 @@ export function Topbar({ isOnline }: { isOnline: boolean }) {
       className="sticky top-0 z-30 border-b border-border/60 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-indigo-500/90 to-cyan-400/90 shadow-[0_10px_30px_-12px_rgba(56,189,248,0.55)]" />
-          <div className="leading-tight">
-            <div data-testid="topbar-app-name" className="text-sm font-semibold">
-              {t("appName", lang)}
-            </div>
-            <div data-testid="topbar-subtitle" className="text-xs text-muted-foreground">
-              {t("respectOffline", lang)}
+        <div className="flex items-center gap-3">
+          <MobileNav />
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-indigo-500/90 to-cyan-400/90 shadow-[0_10px_30px_-12px_rgba(56,189,248,0.55)]" />
+            <div className="leading-tight">
+              <div data-testid="topbar-app-name" className="text-sm font-semibold">
+                {t("appName", lang)}
+              </div>
+              <div data-testid="topbar-subtitle" className="text-xs text-muted-foreground">
+                {t("respectOffline", lang)}
+              </div>
             </div>
           </div>
         </div>

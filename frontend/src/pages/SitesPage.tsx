@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
-import { Copy, Plus, Trash2 } from "lucide-react";
+import { Copy, ExternalLink, Plus, Trash2 } from "lucide-react";
 
 function snippet(siteIdVal: string) {
   return `<!-- Self Analytics (first-party) -->\n<script async src=\"/sa/insight.js\" data-site=\"${siteIdVal}\"></script>`;
@@ -34,7 +34,10 @@ export default function SitesPage() {
     const n = name.trim();
     const d = domain.trim();
     if (!n || !d) {
-      toast({ title: lang === "ar" ? "أكمل البيانات" : "Missing fields", description: lang === "ar" ? "أدخل الاسم والدومين" : "Enter name & domain" });
+      toast({
+        title: lang === "ar" ? "أكمل البيانات" : "Missing fields",
+        description: lang === "ar" ? "أدخل الاسم والدومين" : "Enter name & domain",
+      });
       return;
     }
     const id = await siteId();
@@ -86,11 +89,21 @@ export default function SitesPage() {
             <div className="grid gap-3">
               <div className="grid gap-2">
                 <Label data-testid="create-site-name-label">{t("siteName", lang)}</Label>
-                <Input data-testid="create-site-name-input" value={name} onChange={(e) => setName(e.target.value)} placeholder={lang === "ar" ? "مثال: متجري" : "e.g. My Shop"} />
+                <Input
+                  data-testid="create-site-name-input"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={lang === "ar" ? "مثال: متجري" : "e.g. My Shop"}
+                />
               </div>
               <div className="grid gap-2">
                 <Label data-testid="create-site-domain-label">{t("siteDomain", lang)}</Label>
-                <Input data-testid="create-site-domain-input" value={domain} onChange={(e) => setDomain(e.target.value)} placeholder={lang === "ar" ? "example.com" : "example.com"} />
+                <Input
+                  data-testid="create-site-domain-input"
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  placeholder={lang === "ar" ? "example.com" : "example.com"}
+                />
               </div>
               <div className="flex items-center justify-end gap-2 pt-2">
                 <Button data-testid="create-site-cancel" variant="outline" className="rounded-full" onClick={() => setOpen(false)}>
@@ -135,7 +148,11 @@ export default function SitesPage() {
                       <div className="font-semibold">{s.name}</div>
                       <div className="mt-0.5 text-xs text-muted-foreground">{s.domain}</div>
                     </div>
-                    <Badge data-testid={`site-active-${s.id}`} variant={s.isActive ? "secondary" : "outline"} className="rounded-full">
+                    <Badge
+                      data-testid={`site-active-${s.id}`}
+                      variant={s.isActive ? "secondary" : "outline"}
+                      className="rounded-full"
+                    >
                       {s.isActive ? (lang === "ar" ? "نشط" : "Active") : lang === "ar" ? "موقوف" : "Paused"}
                     </Badge>
                   </div>
@@ -157,6 +174,17 @@ export default function SitesPage() {
                     <Button data-testid="copy-snippet" variant="outline" className="rounded-full" onClick={copySnippet}>
                       <Copy className="h-4 w-4" />
                       <span className="ms-2">{t("copy", lang)}</span>
+                    </Button>
+                    <Button
+                      data-testid="open-demo-page"
+                      variant="outline"
+                      className="rounded-full"
+                      asChild
+                    >
+                      <a href={`/demo.html?site=${encodeURIComponent(selected.id)}`} target="_blank" rel="noreferrer">
+                        <ExternalLink className="h-4 w-4" />
+                        <span className="ms-2">{lang === "ar" ? "صفحة تجريبية" : "Demo page"}</span>
+                      </a>
                     </Button>
                     <Button
                       data-testid="delete-site"
