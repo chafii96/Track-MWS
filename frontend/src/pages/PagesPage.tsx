@@ -150,11 +150,13 @@ export default function PagesPage() {
                 data-testid={`pages-row-${r.url}`}
                 className="grid grid-cols-12 gap-2 px-4 py-3 text-sm hover:bg-background/40"
               >
-                <div className="col-span-6 truncate" title={r.url}>
+                <div className="col-span-5 truncate" title={r.url}>
                   {r.url}
                 </div>
                 <div className="col-span-2">{r.views}</div>
-                <div className="col-span-2">{r.visitors}</div>
+                <div className="col-span-1">{r.visitors}</div>
+                <div className="col-span-1">{r.entry}</div>
+                <div className="col-span-1">{r.exit}</div>
                 <div className="col-span-1">{r.avgScroll.toFixed(0)}</div>
                 <div className="col-span-1">{Math.round(r.avgDurationMs / 1000)}s</div>
               </div>
