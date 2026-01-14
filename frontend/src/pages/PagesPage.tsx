@@ -68,7 +68,12 @@ export default function PagesPage() {
           </p>
         </div>
         <div className="w-full max-w-sm">
-          <Input data-testid="pages-search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={lang === "ar" ? "ابحث بالرابط..." : "Search by URL..."} />
+          <Input
+            data-testid="pages-search"
+            value={q}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)}
+            placeholder={lang === "ar" ? "ابحث بالرابط..." : "Search by URL..."}
+          />
         </div>
       </div>
 

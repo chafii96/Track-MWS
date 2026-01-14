@@ -25,7 +25,7 @@ export function SiteSelector() {
 
   return (
     <div data-testid="site-selector" className="w-full max-w-sm">
-      <Select value={value} onValueChange={(v) => setSelectedSiteId(v)}>
+      <Select value={value} onValueChange={(v: string) => setSelectedSiteId(v)}>
         <SelectTrigger data-testid="site-selector-trigger" className="h-10 rounded-full">
           <SelectValue placeholder={t("sidebarSites", lang)} />
         </SelectTrigger>

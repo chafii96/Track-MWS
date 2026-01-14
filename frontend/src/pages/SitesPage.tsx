@@ -93,7 +93,7 @@ export default function SitesPage() {
                 <Input
                   data-testid="create-site-name-input"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                   placeholder={lang === "ar" ? "مثال: متجري" : "e.g. My Shop"}
                 />
               </div>
@@ -102,7 +102,7 @@ export default function SitesPage() {
                 <Input
                   data-testid="create-site-domain-input"
                   value={domain}
-                  onChange={(e) => setDomain(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDomain(e.target.value)}
                   placeholder={lang === "ar" ? "example.com" : "example.com"}
                 />
               </div>
