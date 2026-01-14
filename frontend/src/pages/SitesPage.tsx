@@ -14,7 +14,8 @@ import { toast } from "@/hooks/use-toast";
 import { Copy, ExternalLink, Plus, Trash2 } from "lucide-react";
 
 function snippet(siteIdVal: string) {
-  return `<!-- Self Analytics (first-party) -->\n<script async src=\"/sa/insight.js\" data-site=\"${siteIdVal}\"></script>`;
+  // Build without escaping quotes to keep linters happy
+  return `<!-- Self Analytics (first-party) -->\n<script async src="/sa/insight.js" data-site="${siteIdVal}"></script>`;
 }
 
 export default function SitesPage() {
