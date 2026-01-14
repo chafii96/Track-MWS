@@ -1,6 +1,6 @@
 /* Service Worker: offline cache + IndexedDB collector (client-side) */
-const CACHE_NAME = "sa-pwa-v1";
-const APP_SHELL = ["/", "/index.html", "/manifest.webmanifest", "/icons/icon.svg", "/icons/maskable.svg"];
+const CACHE_NAME = "sa-pwa-v2";
+const APP_SHELL = ["/", "/index.html", "/demo.html", "/manifest.webmanifest", "/icons/icon.svg", "/icons/maskable.svg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
