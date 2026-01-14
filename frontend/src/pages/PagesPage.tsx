@@ -12,6 +12,9 @@ type Row = {
   visitors: number;
   avgDurationMs: number;
   avgScroll: number;
+  entry: number;
+  exit: number;
+  exitRate: number;
 };
 
 export default function PagesPage() {
