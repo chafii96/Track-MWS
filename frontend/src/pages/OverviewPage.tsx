@@ -14,27 +14,30 @@ import { RefreshCcw } from "lucide-react";
 export default function OverviewPage() {
   const { lang, selectedSiteId } = useAppStore();
   const [range, setRange] = useState<"7d" | "30d" | "90d">("30d");
+  const [now, setNow] = React.useState<number>(() => Date.now());
+
+  React.useEffect(() => {
+    const tmr = window.setInterval(() => setNow(Date.now()), 15000);
+    return () => window.clearInterval(tmr);
+  }, []);
 
   const hits = useLiveQuery(async () => {
     if (!selectedSiteId) return [];
-    // pull last 90 days max for responsiveness
-    const ms = rangeToMs("90d");
-    const start = Date.now() - ms;
+    const start = now - rangeToMs("90d");
     return db.hits.where("siteId").equals(selectedSiteId).and((h) => h.ts >= start).toArray();
-  }, [selectedSiteId]);
+  }, [selectedSiteId, now]);
 
   const filtered = useMemo(() => {
     if (!hits) return [];
-    const ms = rangeToMs(range);
-    const start = Date.now() - ms;
+    const start = now - rangeToMs(range);
     return hits.filter((h) => h.ts >= start);
-  }, [hits, range]);
+  }, [hits, range, now]);
 
   const kpis = useMemo(() => calcKpis(filtered), [filtered]);
   const chart = useMemo(() => groupByDay(filtered), [filtered]);
 
-  const rtHits = useMemo(() => realtimeWindow(filtered, 30), [filtered]);
-  const active = useMemo(() => activeVisitors(filtered, 5), [filtered]);
+  const rtHits = useMemo(() => realtimeWindow(filtered, 30, now), [filtered, now]);
+  const active = useMemo(() => activeVisitors(filtered, 5, now), [filtered, now]);
 
   const topPages = useMemo(() => topBy(filtered.filter((h) => h.type === "pageview"), (h) => h.url, 6), [filtered]);
 
@@ -46,9 +49,7 @@ export default function OverviewPage() {
             {t("sidebarOverview", lang)}
           </h1>
           <p data-testid="overview-subtitle" className="mt-1 text-sm text-muted-foreground">
-            {lang === "ar"
-              ? "مؤشرات سريعة + رسوم بيانية. (Client‑side IndexedDB)"
-              : "Quick KPIs and charts (client-side IndexedDB)."}
+            {lang === "ar" ? "مؤشرات سريعة + رسوم بيانية. (Client‑side IndexedDB)" : "Quick KPIs and charts (client-side IndexedDB)."}
           </p>
         </div>
 
@@ -87,14 +88,7 @@ export default function OverviewPage() {
             </button>
           </div>
 
-          <Button
-            data-testid="overview-refresh"
-            variant="outline"
-            className="rounded-full"
-            onClick={() => {
-              // LiveQuery auto updates; this is visual affordance.
-            }}
-          >
+          <Button data-testid="overview-refresh" variant="outline" className="rounded-full" onClick={() => setNow(Date.now())}>
             <RefreshCcw className="h-4 w-4" />
             <span className="ms-2">{lang === "ar" ? "تحديث" : "Refresh"}</span>
           </Button>
@@ -141,9 +135,11 @@ export default function OverviewPage() {
                   >
                     <div className="min-w-0">
                       <div className="truncate text-sm">{h.title || h.url}</div>
-                      <div className="mt-0.5 truncate text-xs text-muted-foreground">{h.countryHint} · {h.browser} · {h.deviceType}</div>
+                      <div className="mt-0.5 truncate text-xs text-muted-foreground">
+                        {h.countryHint} · {h.browser} · {h.deviceType}
+                      </div>
                     </div>
-                    <div className="text-xs text-muted-foreground">{Math.max(0, Math.round((Date.now() - h.ts) / 60000))}m</div>
+                    <div className="text-xs text-muted-foreground">{Math.max(0, Math.round((now - h.ts) / 60000))}m</div>
                   </div>
                 ))}
                 {rtHits.length === 0 ? (
@@ -202,7 +198,9 @@ export default function OverviewPage() {
                 {topPages.map((p) => (
                   <div data-testid={`top-page-${p.key}`} key={p.key} className="rounded-xl border border-border/60 bg-background/40 px-3 py-2">
                     <div className="truncate text-sm">{p.key}</div>
-                    <div className="mt-1 text-xs text-muted-foreground">{p.value} {lang === "ar" ? "مشاهدة" : "views"}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      {p.value} {lang === "ar" ? "مشاهدة" : "views"}
+                    </div>
                   </div>
                 ))}
                 {topPages.length === 0 ? (
@@ -219,8 +217,8 @@ export default function OverviewPage() {
               </div>
               <div data-testid="tips-body" className="mt-2 text-sm text-muted-foreground">
                 {lang === "ar"
-                  ? "للتجربة بسرعة: افتح أي صفحة في نفس الدومين وضع كود التتبع. ثم ارجع للوحة وشاهد الـ Real‑time."
-                  : "To test fast: add the snippet to any page on the same domain, then return to the dashboard and watch real-time."}
+                  ? "للتجربة بسرعة: افتح صفحة /demo.html من زر (صفحة تجريبية) داخل صفحة المواقع."
+                  : "Quick test: open /demo.html from the Demo page button in Sites."}
               </div>
             </Card>
           </div>
