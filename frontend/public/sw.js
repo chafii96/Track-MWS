@@ -1,5 +1,5 @@
 /* Service Worker: offline cache + IndexedDB collector (client-side) */
-const CACHE_NAME = "sa-pwa-v2";
+const CACHE_NAME = "sa-pwa-v3";
 const APP_SHELL = ["/", "/index.html", "/demo.html", "/manifest.webmanifest", "/icons/icon.svg", "/icons/maskable.svg"];
 
 self.addEventListener("install", (event) => {
@@ -20,6 +20,14 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const req = event.request;
+  const url = new URL(req.url);
+
+  // Never cache tracking script / service worker itself
+  if (url.origin === self.location.origin && (url.pathname === "/sa/insight.js" || url.pathname === "/sw.js")) {
+    event.respondWith(fetch(req, { cache: "no-store" }));
+    return;
+  }
+
   // Network-first for html (keeps app fresh), cache-first for rest.
   if (req.mode === "navigate") {
     event.respondWith(
@@ -45,7 +53,7 @@ self.addEventListener("fetch", (event) => {
       try {
         const fresh = await fetch(req);
         const cache = await caches.open(CACHE_NAME);
-        // Cache same-origin static.
+        // Cache same-origin static (except tracking script/sw which are handled above).
         if (new URL(req.url).origin === self.location.origin) {
           cache.put(req, fresh.clone());
         }

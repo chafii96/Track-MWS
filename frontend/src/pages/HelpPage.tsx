@@ -34,7 +34,7 @@ export default function HelpPage() {
                   {lang === "ar" ? "الصقه قبل إغلاق وسم body:" : "Paste it before closing body:"}
                 </div>
                 <pre data-testid="help-snippet-code" className="overflow-auto rounded-2xl border border-border/60 bg-background/40 p-4 text-xs" dir="ltr">
-{`<script async src="/sa/insight.js" data-site="YOUR_SITE_ID"></script>`}
+{`<script async src="/sa/insight.js?v=3" data-site="YOUR_SITE_ID"></script>`}
                 </pre>
               </div>
             </AccordionContent>

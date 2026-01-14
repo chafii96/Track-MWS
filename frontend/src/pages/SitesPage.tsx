@@ -15,7 +15,7 @@ import { Copy, ExternalLink, Plus, Trash2 } from "lucide-react";
 
 function snippet(siteIdVal: string) {
   // Build without escaping quotes to keep linters happy
-  return `<!-- Self Analytics (first-party) -->\n<script async src="/sa/insight.js" data-site="${siteIdVal}"></script>`;
+  return `<!-- Self Analytics (first-party) -->\n<script async src="/sa/insight.js?v=3" data-site="${siteIdVal}"></script>`;
 }
 
 export default function SitesPage() {
