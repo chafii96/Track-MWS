@@ -101,3 +101,42 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+## user_problem_statement: "بناء تطبيق تحليلات زيارات (PWA) مشابه Google Analytics للاستخدام الشخصي، مع كود تتبع + Dashboard + Mongo + IndexedDB"
+## backend:
+##   - task: "Phase 1 - Analytics API (sites + collect + overview + tracker js)"
+##     implemented: true
+##     working: "NA"
+##     file: "/app/backend/server.py"
+##     stuck_count: 0
+##     priority: "high"
+##     needs_retesting: true
+##     status_history:
+##       - working: "NA"
+##         agent: "main"
+##         comment: "تم توسيع backend/server.py لإضافة: /api/sites, /api/collect, /api/hits, /api/overview, /api/i.js مع احترام DNT و rate limit و IP hashing. يحتاج اختبار backend."
+## frontend:
+##   - task: "Phase 1 - Frontend sync مع backend (Mongo + IndexedDB) + Chart.js migration"
+##     implemented: false
+##     working: "NA"
+##     file: "/app/frontend/src/*"
+##     stuck_count: 0
+##     priority: "high"
+##     needs_retesting: false
+##     status_history:
+##       - working: "NA"
+##         agent: "main"
+##         comment: "الواجهة الحالية تعتمد على IndexedDB client-only و Recharts. مطلوب ربطها بالباكند + تحويل الرسوم إلى Chart.js حسب المتطلبات."
+## metadata:
+##   created_by: "main_agent"
+##   version: "1.0"
+##   test_sequence: 1
+##   run_ui: false
+## test_plan:
+##   current_focus:
+##     - "Phase 1 - Analytics API (sites + collect + overview + tracker js)"
+##   stuck_tasks: []
+##   test_all: false
+##   test_priority: "high_first"
+## agent_communication:
+##   - agent: "main"
+##     message: "بدأنا Phase 1. الباكند تم تحديثه لإضافة APIs للتتبع والتجميع. الرجاء اختبار endpoints المذكورة مع سيناريوهات DNT و rate limit وصحة Site ID."
