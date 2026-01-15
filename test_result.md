@@ -105,15 +105,18 @@
 ## backend:
 ##   - task: "Phase 1 - Analytics API (sites + collect + overview + tracker js)"
 ##     implemented: true
-##     working: "NA"
+##     working: true
 ##     file: "/app/backend/server.py"
 ##     stuck_count: 0
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##       - working: "NA"
 ##         agent: "main"
 ##         comment: "تم توسيع backend/server.py لإضافة: /api/sites, /api/collect, /api/hits, /api/overview, /api/i.js مع احترام DNT و rate limit و IP hashing. يحتاج اختبار backend."
+##       - working: true
+##         agent: "testing"
+##         comment: "✅ جميع اختبارات الباكند نجحت (10/10): 1) GET /api/ يرجع message ✓ 2) POST /api/sites ينشئ site بـ ID يبدأ بـ site_ ✓ 3) GET /api/sites يحتوي الموقع المُنشأ ✓ 4) GET /api/i.js يرجع JavaScript مع content-type صحيح ويحتوي /api/collect ✓ 5) POST /api/collect بدون DNT يجمع البيانات بنجاح ✓ 6) POST /api/collect مع DNT=1 يرجع ok=true ولا يخزن البيانات ✓ 7) GET /api/hits يرجع hits مع ipHash ✓ 8) GET /api/overview يرجع kpis + series + activeVisitors + topPages ✓ 9) Rate limiting يعمل بشكل صحيح (119 نجح، 11 تم رفضه بـ 429) ✓ 10) تأكيد عدم تخزين طلبات DNT ✓"
 ## frontend:
 ##   - task: "Phase 1 - Frontend sync مع backend (Mongo + IndexedDB) + Chart.js migration"
 ##     implemented: false
